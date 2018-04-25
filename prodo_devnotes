@@ -1,0 +1,56 @@
+Dev notes for my todo list python project
+
+GOAL: Make a todo list program with varius QoL features such as
+- Ability to make different todo lists for differing tasks(Simple grocery list, project to do list with deadline, todo list with sublist)
+- Set deadline for tasks and show time left on items of a list that have a dealine
+- Be able to set status for items and lists
+- Build up GUI to support these features
+
+# Ideas:
+# When initializing a listpad, automatically add in time and date of creation
+# Ability to set deadline for individual tasks 
+# Make a listpad and set a deadline for it where all tasks would need to be completed before the "todo" list is considered complete (useful for projects with clearly defined steps necessary to complete)
+
+
+Data Structure of Todo lists:
+  Todo object:
+    Status variable (symbolic value that will identify status of a task)
+    Detail variable (String that details what a task is)
+    Due variable (Optional; a date that will be used to show the deadline or used to show time left on task that are assigned a value to this)
+
+    time_left property: will store time difference between due date and when the current day that time left is checked
+
+    Change Status method:
+      Allows the changing of the status of a task between
+      Incomplete/In progress/Completed
+      W/ symbols (o/-/x)
+      In GUI will have a button to set status as in progress. Default status will be incomplete.
+
+    Change Detail method:
+      Allows changing of the descriptive string of a task
+      Should not allow empty task/string
+      Will be limiterd to a certain amount of characters
+
+    Change Due date method:
+      Accepts a valid date to act as deadline for a certain task
+      Will help with checking for time left
+
+    Check time left method:
+      Will display the time left from the day checked to when a task is due and compute time left and report it in a readable way.
+
+    Get method for: Status, Detail, Due
+
+
+  Pad object:
+    Data structure containing all Todo objects
+      Current idea: A whole pad object will contain a dictionary of todo objects with a task key assigned per task objects
+    Variable for name of the the Pad
+    Variable of total number of tasks
+    Variable of completd tasks
+    (Optional) Variable for deadline
+
+    __del__ method:
+      Easy removal of a task and deduction of total task
+
+
+
