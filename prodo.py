@@ -6,6 +6,12 @@ class Pad():
   """Object that contains data structure in which tasks are stored to form a complete ToDo list
   Takes in a string as a name and optionally a date to server as a deadline for the whole tasks incuded in this list"""
   
+  def __new__(cls, title):
+  	if len(title) > 20:
+  		return super(Pad, cls).__new__(cls)
+  	else:
+  		return ValueError
+
   def __init__(self, title):
     self.title = title    # Later, check for a certain length limit and also if a string was entered
     self.due = None

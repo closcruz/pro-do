@@ -53,4 +53,5 @@ Data Structure of Todo lists:
       Easy removal of a task and deduction of total task
 
 
-
+    List objectes will have a key that can be used to identified where that task is from. 
+    Later learn write to disk for usage in the GUI
