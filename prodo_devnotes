@@ -10,9 +10,14 @@ GOAL: Make a todo list program with varius QoL features such as
 # When initializing a listpad, automatically add in time and date of creation
 # Ability to set deadline for individual tasks 
 # Make a listpad and set a deadline for it where all tasks would need to be completed before the "todo" list is considered complete (useful for projects with clearly defined steps necessary to complete)
+# Ultimately be able to save data on computer and when starting up the program all the pads will load so user can access the task in whichever one they need to see.
+  This will also make it so that the time left for task is updated. 
 
 
-Data Structure of Todo lists:
+# For GUI use kivy API
+
+
+Data Structure of To-do lists:
   Todo object:
     Status variable (symbolic value that will identify status of a task)
     Detail variable (String that details what a task is)
@@ -49,9 +54,11 @@ Data Structure of Todo lists:
     Variable of completd tasks
     (Optional) Variable for deadline
 
-    __del__ method:
-      Easy removal of a task and deduction of total task
-
-
-    List objectes will have a key that can be used to identified where that task is from. 
+    List objectes will have a key that can be used to identified where that task is from.
+      ID will be auto assigned when Pad object is created. 
+      Current idea is that default id will be formatted as [First character][Last character][#]
+      Will check for uniqueness when creating Pad objects and apply changes if neccessary
     Later learn write to disk for usage in the GUI
+
+
++
