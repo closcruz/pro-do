@@ -2,24 +2,28 @@
 # By: Carlos Cruz Ramos
 # Ver. 0.05
 
+import datetime as dt
 
 class Pad:
     """Object that contains data structure in which tasks are stored to form a complete ToDo list
     Takes in a string as a name and optionally a date to server as a deadline for the whole tasks incuded in this list"""
 
+    _ids = []   # List that will contain all ids to check for uniqueness
+
     # Override __new__ to check to see if length of title is short enough to create the class.
-    def __new__(cls, title, id):  # Figure out how to check and keep track of id's for uniqueness
-        if len(title) < 40:
+    def __new__(cls, title, ids):  # Figure out how to check and keep track of id's for uniqueness
+        if len(title) < 40 and ids not in Pad._ids:
             return super(Pad, cls).__new__(cls)
         else:
-            raise ValueError("Please enter title with less than 40 characters.")
+            raise ValueError("Please enter title with less than 40 characters and unique id.")
 
-    def __init__(self, title, id):
+    def __init__(self, title, ids):
         self.title = title
-        self.id = id
         self.due = None
         self.todo = {}        # Dictionary that will contain task index with its corresponding Todo object
         self.tot_tasks = 0    # Keeps track of the total number of task in a
+        self.idx = ids
+        Pad._ids.append(ids)
 
     @property
     def name(self):
@@ -40,17 +44,21 @@ class Pad:
     @property
     def duedate(self):
         """'Due' property of Pad"""
-        print("Getting due date of Pad: {}".format(self.due))
+        yr = self.due.year
+        mt = self.due.month
+        day = self.due.day
+        print("Getting due date of Pad: {}-{}-{}".format(day, mt, yr))
         return self.due
 
     @duedate.setter
-    def duedate(self, date):
-        print("Setting new due date of Pad for: {}".format(date))
-        self.due = date
+    def duedate(self, tpldate):
+        yr, mt, day = tpldate
+        print("Setting new due date of Pad for: {}-{}-{}".format(day, mt, yr))
+        self.due = dt.datetime(yr, mt, day)
 
     @duedate.deleter
     def duedate(self):
-        del self.duedate
+        del self.due
 
     @property
     def tasks(self):
@@ -67,6 +75,11 @@ class Pad:
         else:
             self.todo[key] = task
             self.tot_tasks += 1
+
+    @property
+    def checkid(self):
+        """Handles checking for ids; debugging purpose"""
+        print("Here are the ids of all Pad objects: {}".format(self._ids))
 
 # Adding object to a dict works and can call stuff by dict[ind].foo
 
@@ -139,9 +152,11 @@ def main():
     # print(t)  # Testing __repr__ of Todo obj
 
     print("Now testing combining Pad and Todo object")
-    proj1 = Pad("Prodo project")  # Creat Pad with task related to prodo python proj
+    proj1 = Pad("Prodo project", 'px1')  # Creat Pad with task related to prodo python proj
     proj1.name                    # Retrieves name as sanity check
-    proj1.duedate = "May"         # Sets due date to May (in future will allow due date set at creation)
+    proj1.duedate = (2018, 6, 7)  # Sets due date to June 7th 2018
+    proj1.duedate
+    proj1.checkid
 
     time = Todo("Implement time keeping aspect of Pad and Todo")  # Create a Todo object that holds a task and its status
     time.task                                                     # Name of task sanity check
@@ -153,5 +168,9 @@ def main():
     # proj2 = Pad("I am a long title length")   # len = 24
     # proj2.name
 
+    # projx = Pad("not unique id", 'px1')
+    # projx.checkidS
+    projy = Pad("Unique pad with unique id", 'py1')
+    projy.checkid
 
 main()
