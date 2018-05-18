@@ -1,8 +1,9 @@
 # Prototype ToDo app for personal use
 # By: Carlos Cruz Ramos
-# Ver. 0.05
+# Ver. 0.09
 
 import datetime as dt
+
 
 class Pad:
     """Object that contains data structure in which tasks are stored to form a complete ToDo list
@@ -92,6 +93,7 @@ class Todo:
         self.code = 'o'        # Represents status of a task, whether it is incomplete, in progress or completed (o/-/x)
         self.detail = name
         self.due = None
+        self.timeleft = None
 
     def __repr__(self):
         return "{} | {} | {}".format(self._codes[self.code], self.detail, self.due)
@@ -125,10 +127,30 @@ class Todo:
         print("Deleting task: {}".format(self.detail))
         del self.detail
 
-    def changeDue(self, newdate):
-        # Ability to change the deadline of the task.
-        pass
+    @property
+    def taskdue(self):
+        """Due date property of a task"""
+        yr = self.due.year
+        mt = self.due.month
+        day = self.due.day
+        print("This task is due {}-{}-{}".format(day, mt, yr))
+        return self.due
 
+    @taskdue.setter
+    def taskdue(self, newdue):
+        yr, mt, day = newdue
+        print("Setting new due date for {}-{}-{}".format(day, mt, yr))
+        self.due = dt.datetime(yr, mt, day)
+
+    @property
+    def daysleft(self):
+        """Time left property of a task"""
+        print("Time left for this task is {} days".format(self.due.days))
+        return self.due.days
+
+    def calctimeleft(self):
+        today = dt.datetime.today()
+        self.due = self.due - today
 
 def main():
     # print("Making a Pad object with 'Work' as title.")
@@ -161,6 +183,9 @@ def main():
     time = Todo("Implement time keeping aspect of Pad and Todo")  # Create a Todo object that holds a task and its status
     time.task                                                     # Name of task sanity check
     time.status                                                   # Status sanity check
+    time.taskdue = (2018, 6, 7)
+    time.calctimeleft()
+    time.daysleft
 
     proj1.tasks = (1, time)   # adds the time instance of Todo into the Pad dictionary of tasks
     proj1.tasks                 # Checks to see how it is represented
