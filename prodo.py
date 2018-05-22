@@ -7,7 +7,8 @@ import datetime as dt
 
 class Pad:
     """Object that contains data structure in which tasks are stored to form a complete ToDo list
-    Takes in a string as a name and optionally a date to server as a deadline for the whole tasks incuded in this list"""
+    Takes in a string as a name and optionally a date to server as a
+    deadline for the whole tasks included in this list"""
 
     _ids = []   # List that will contain all ids to check for uniqueness
 
@@ -21,6 +22,7 @@ class Pad:
     def __init__(self, title, ids):
         self.title = title
         self.due = None
+        self.timeleft = None
         self.todo = {}        # Dictionary that will contain task index with its corresponding Todo object
         self.tot_tasks = 0    # Keeps track of the total number of task in a
         self.idx = ids
@@ -81,6 +83,22 @@ class Pad:
     def checkid(self):
         """Handles checking for ids; debugging purpose"""
         print("Here are the ids of all Pad objects: {}".format(self._ids))
+        return self._ids
+
+    @property
+    def daysleft(self):
+        """Tinme left property for Pad object"""
+        strdelt = str(self.timeleft)
+        if self.timeleft.days != 0:
+            print("Time left for all objectives is {}".format(strdelt[:7]))
+            return strdelt[:7]
+        else:
+            print("Time left for all objectives is {}".format(strdelt[:8]))
+            return strdelt[:8]
+
+    def calctimeleft(self):
+        today = dt.datetime.today()
+        self.timeleft = self.due - today
 
 # Adding object to a dict works and can call stuff by dict[ind].foo
 
@@ -96,7 +114,7 @@ class Todo:
         self.timeleft = None
 
     def __repr__(self):
-        return "{} | {} | {}".format(self._codes[self.code], self.detail, self.due)
+        return "{} | {} | {}".format(self._codes[self.code], self.detail, self.daysleft)
 
     @property
     def status(self):
@@ -145,45 +163,33 @@ class Todo:
     @property
     def daysleft(self):
         """Time left property of a task"""
-        print("Time left for this task is {} days".format(self.due.days))
-        return self.due.days
+        strdelt = str(self.timeleft)
+        if self.timeleft.days != 0:
+            print("Time left for this task is {}".format(strdelt[:7]))
+            return strdelt[:7]
+        else:
+            print("Time left for this task is {}".format(strdelt[:8]))
+            return strdelt[:8]
 
     def calctimeleft(self):
         today = dt.datetime.today()
-        self.due = self.due - today
+        self.timeleft = self.due - today
+
 
 def main():
-    # print("Making a Pad object with 'Work' as title.")
-    # p = Pad("Work")
-    # p.name = "Project"
-    # print(p.name)
-    # p.due = "May"
-    # print(p.due)
-    # p.tasks = ((1, 'Eat'))
-    # p.tasks
-    # print(type(p.todo))
-    # print(p.tot_tasks)
-
-    # t = Todo()
-    # t.status
-    # t.status = '-'
-    # # t.status = 'c'
-    # t.task
-    # t.task = "sleep"
-
-    # print(t)  # Testing __repr__ of Todo obj
-
     print("Now testing combining Pad and Todo object")
     proj1 = Pad("Prodo project", 'px1')  # Creat Pad with task related to prodo python proj
     proj1.name                    # Retrieves name as sanity check
     proj1.duedate = (2018, 6, 7)  # Sets due date to June 7th 2018
     proj1.duedate
+    proj1.calctimeleft()
+    proj1.daysleft
     proj1.checkid
 
     time = Todo("Implement time keeping aspect of Pad and Todo")  # Create a Todo object that holds a task and its status
     time.task                                                     # Name of task sanity check
     time.status                                                   # Status sanity check
-    time.taskdue = (2018, 6, 7)
+    time.taskdue = (2018, 5, 21)
     time.calctimeleft()
     time.daysleft
 
@@ -197,5 +203,6 @@ def main():
     # projx.checkidS
     projy = Pad("Unique pad with unique id", 'py1')
     projy.checkid
+
 
 main()
